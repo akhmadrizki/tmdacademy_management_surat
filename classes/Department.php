@@ -14,11 +14,15 @@ class Department extends User {
     }
 
     public function uploadDraft($draftFile) {
-        $query = "INSERT INTO surat (department_id, draft_file, status) VALUES (:department_id, :draft_file, 'pending')";
+        $query = "INSERT INTO surat (department_id, draft_file, status, uploaded_at) VALUES (:department_id, :draft_file, 'pending', :uploaded_at)";
         
+        // fungsi date adalah untuk mendapatkan current date
+        $date = date('Y-m-d');
+
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':department_id', $this->id);
         $stmt->bindParam(':draft_file', $draftFile);
+        $stmt->bindParam(':uploaded_at', $date);
         
         if($stmt->execute()) {
             return true;
